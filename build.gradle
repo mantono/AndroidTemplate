@@ -1,0 +1,71 @@
+apply plugin: 'kotlin'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+group = 'com.mantono'
+version = '1.0-SNAPSHOT'
+description = 'description of project'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "com.mantono.APP_ID"
+        minSdkVersion 23
+        targetSdkVersion 25
+        versionCode 1
+        versionName version
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+buildscript {
+    ext.kotlin_version = '1.1.3'
+    ext.jvmTarget = '1.8'
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jre8', version: kotlin_version
+    compile group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: '0.14'
+    compile group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '0.14'
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+}
+
+repositories {
+    maven { url "http://jcenter.bintray.com" }
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    description = 'Generates gradlew[.bat] scripts for faster execution'
+    gradleVersion = '4.0'
+}
